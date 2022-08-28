@@ -176,4 +176,4 @@ func main() {
 }
 ```
 
-See more usage examples in the [crypto-test.go]() file.
+See more usage examples in the [crypto-test.go]("https://github.com/eVESTXCOIN/go-lib-eVESTX/blob/master/crypto_test.go") file.
