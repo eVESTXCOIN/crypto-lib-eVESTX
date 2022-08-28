@@ -17,10 +17,10 @@ The following could be done using the library:
 ## Installation and import
 
 ```bash
-go get -u github.com/evESTXCOIN/go-eVESTX-crypto
+go get -u github.com/eVESTXCOIN/go-lib-eVESTX
 ```
 ```go
-import "github.com/evESTXCOIN/go-eVESTX-crypto"
+import "github.com/eVESTXCOIN/go-lib-eVESTX"
 ```
 
 ## Short API reference with examples
@@ -50,7 +50,7 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/evESTXCOIN/go-eVESTX-crypto"
+	"github.com/eVESTXCOIN/go-lib-eVESTX"
 )
 
 func main() {
@@ -86,7 +86,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/evESTXCOIN/go-eVESTX-crypto"
+	"github.com/eVESTXCOIN/go-lib-eVESTX"
 )
 
 func main() {
@@ -115,7 +115,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/evESTXCOIN/go-eVESTX-crypto"
+	"github.com/eVESTXCOIN/go-lib-eVESTX"
 )
 
 func main() {
@@ -149,7 +149,7 @@ package main
 import (
 	"fmt"
 	"encoding/hex"
-	"github.com/evESTXCOIN/go-eVESTX-crypto"
+	"github.com/eVESTXCOIN/go-lib-eVESTX"
 )
 
 func main() {
