@@ -1,6 +1,9 @@
 # go-lib-eVESTX
 
-`go-lib-crypto` is a unified crypto library for [VestXHybrid](https://vestxhybrid.com/).
+[![Go Report Card](https://goreportcard.com/badge/github.com/eVESTXCOIN/go-lib-eVESTX)](https://goreportcard.com/report/github.com/eVESTXCOIN/go-lib-eVESTX)
+[![GoDoc](https://godoc.org/github.com/eVESTXCOIN/go-lib-eVESTX?status.svg)](https://godoc.org/github.com/eVESTXCOIN/go-lib-eVESTX)
+
+`go-lib-eVESTX` is a unified crypto library for [VestXHybrid](https://vestxhybrid.com/).
 
 This library meant to be used in client applications. That's why its API is relatively simple. 
 
