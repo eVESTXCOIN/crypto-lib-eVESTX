@@ -38,7 +38,7 @@ type KeyPair struct {
 	PrivateKey PrivateKey
 }
 
-// VrpChainID is a byte to represent blockchain identification.
+// VrpChainID is a int64 to represent blockchain identification.
 type VrpChainID uint64
 
 // Known chain IDs
@@ -108,7 +108,7 @@ type crypto struct {
 // NewVrpCrypto returns a new instance of VrpCrypto interface.
 func NewVrpCrypto() VrpCrypto {
 	h1, err := blake2b.New256(nil)
-	// An error happens only if the passed array is bigger then the hash size. Here we pass empty array so the error is impossible.
+	// An error happens only if the passed array is bigger then the hash size.
 	if err != nil {
 		panic(err)
 	}
