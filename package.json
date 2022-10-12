@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Javascript/typescript library of cryptography used in eVESTX technologies.",
   "main": "js/index.js",
+  "types": "js/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,14 +12,23 @@
     "url": "git+https://github.com/eVESTXCOIN/crypto-lib-eVESTX.git"
   },
   "keywords": [
-    "crypto",
+    "eVESTX",
     "seed",
-    "keys"
+    "keys",
+    "crypto",
+    "protocol",
+    "binary",
+    "cryptography",
+    "signature"
   ],
   "author": "Diego H. O. R. Antunes",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/eVESTXCOIN/crypto-lib-eVESTX/issues"
   },
-  "homepage": "https://github.com/eVESTXCOIN/crypto-lib-eVESTX#readme"
+  "homepage": "https://github.com/eVESTXCOIN/crypto-lib-eVESTX#readme",
+  "dependencies": {
+    "js-sha3": "^0.8.0",
+    "node-forge": "^0.10.0"
+  }
 }

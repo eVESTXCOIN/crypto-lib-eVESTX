@@ -1,10 +1,12 @@
-# go-lib-eVESTX
+# Crypto lib eVESTX
 
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/eVESTXCOIN/go-lib-eVESTX)](https://goreportcard.com/report/github.com/eVESTXCOIN/go-lib-eVESTX)
-[![GoDoc](https://godoc.org/github.com/eVESTXCOIN/go-lib-eVESTX?status.svg)](https://godoc.org/github.com/eVESTXCOIN/go-lib-eVESTX)
+[![Go Report Card](https://goreportcard.com/badge/github.com/eVESTXCOIN/crypto-lib-eVESTX)](https://goreportcard.com/report/github.com/eVESTXCOIN/crypto-lib-eVESTX)
+[![GoDoc](https://godoc.org/github.com/eVESTXCOIN/crypto-lib-eVESTX?status.svg)](https://godoc.org/github.com/eVESTXCOIN/crypto-lib-eVESTX)
 
-`go-lib-eVESTX` is a unified crypto library for [VestXHybrid](https://vestxhybrid.com/).
+# Golang
+
+`crypto-lib-eVESTX` is a unified crypto library for [VestXHybrid](https://vestxhybrid.com/).
 
 This library meant to be used in client applications. That's why its API is relatively simple. 
 
@@ -21,10 +23,10 @@ The following could be done using the library:
 ## Installation and import
 
 ```bash
-go get -u github.com/eVESTXCOIN/go-lib-eVESTX
+go get -u github.com/eVESTXCOIN/crypto-lib-eVESTX
 ```
 ```go
-import "github.com/eVESTXCOIN/go-lib-eVESTX"
+import "github.com/eVESTXCOIN/crypto-lib-eVESTX"
 ```
 
 ## Short API reference with examples
@@ -54,7 +56,7 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/eVESTXCOIN/go-lib-eVESTX"
+	"github.com/eVESTXCOIN/crypto-lib-eVESTX"
 )
 
 func main() {
@@ -90,7 +92,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/eVESTXCOIN/go-lib-eVESTX"
+	"github.com/eVESTXCOIN/crypto-lib-eVESTX"
 )
 
 func main() {
@@ -119,7 +121,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/eVESTXCOIN/go-lib-eVESTX"
+	"github.com/eVESTXCOIN/crypto-lib-eVESTX"
 )
 
 func main() {
@@ -153,7 +155,7 @@ package main
 import (
 	"fmt"
 	"encoding/hex"
-	"github.com/eVESTXCOIN/go-lib-eVESTX"
+	"github.com/eVESTXCOIN/crypto-lib-eVESTX"
 )
 
 func main() {
@@ -180,4 +182,150 @@ func main() {
 }
 ```
 
-See more usage examples in the [crypto-test.go](https://github.com/eVESTXCOIN/go-lib-eVESTX/blob/master/crypto_test.go) file.
+See more usage examples in the [crypto-test.go](https://github.com/eVESTXCOIN/crypto-lib-eVESTX/blob/master/crypto_test.go) file.
+
+
+# CSharp
+
+
+## Include
+```csharp
+using csharp_lib_evestx;
+```
+
+## Seed generation
+
+```csharp
+var crypto = new eVESTXCrypto();
+string seed = crypto.RandomSeed();
+```
+## Keys and address
+
+### publicKey
+```csharp
+var crypto = new eVESTXCrypto();
+string seed = "uncle push human bus echo drastic garden joke sand warfare sentence fossil title color combine";
+var publicKey = crypto.PublicKey(seed);
+int nonce = 0;
+publicKey = crypto.PublicKey(seed, nonce);
+```
+### privateKey
+```csharp
+var crypto = new eVESTXCrypto();
+string seed = "uncle push human bus echo drastic garden joke sand warfare sentence fossil title color combine";
+var privateKey = crypto.PrivateKey(seed);
+int nonce = 0;
+privateKey = crypto.PrivateKey(seed, nonce);
+```
+
+### keyPair
+```csharp
+var crypto = new eVESTXCrypto();
+string seed = "uncle push human bus echo drastic garden joke sand warfare sentence fossil title color combine";
+var keyPair = new KeyPair(seed);
+```
+### address
+```csharp
+var crypto = new eVESTXCrypto();
+string seed = "uncle push human bus echo drastic garden joke sand warfare sentence fossil title color combine";
+var address = crypto.Address(seed, eVESTXChainId.MAIN_NET_CHAIN_ID); //oreVESTXChainId.TEST_NET_CHAIN_ID
+```
+## Signatures
+### signBytes
+```csharp
+var crypto = new eVESTXCrypto();
+var seed = "uncle push human bus echo drastic garden joke sand warfare sentence fossil title color combine";
+var bytes = new byte[] { 117, 110, 99, 108, 101};
+            
+var sign = crypto.SignBytes(bytes, seed);
+            
+var privateKey = "8bg5KM2n5kKQE6bVZssvwMEivc6ctyKahfGLkQfszZfY";
+var sign2 = crypto.SignBytesWithPrivateKey(bytes, privateKey);
+```
+### verifySignature
+```csharp
+var crypto = new eVESTXCrypto();
+var seed = "uncle push human bus echo drastic garden joke sand warfare sentence fossil title color combine";
+var bytes = new byte[] { 117, 110, 99, 108, 101};
+var sign = crypto.SignBytes(bytes, seed);
+crypto.VerifySignature(publicKeyInit, bytes, sign);
+```
+
+## Hashing
+## blake2b
+```csharp
+var crypto = new eVESTXCrypto();
+var bytes = new byte[] { 117, 110, 99, 108, 101};
+crypto.Blake2b(bytes);
+```
+
+## keccak
+```csharp
+var crypto = new eVESTXCrypto();
+var bytes = new byte[] { 117, 110, 99, 108, 101};
+crypto.Keccak(bytes);
+```
+
+## sha256
+```csharp
+var crypto = new eVESTXCrypto();
+var bytes = new byte[] { 117, 110, 99, 108, 101};
+crypto.Sha256(bytes);
+```
+
+## Random
+### randomBytes
+```csharp
+var crypto = new eVESTXCrypto();
+var size = 5;
+var bytes = crypto.RandomBytes(size);
+```
+## Base encoding\decoding
+```csharp
+var crypto = new eVESTXCrypto();
+var bytes = crypto.RandomBytes(32);
+
+var base16String = crypto.Base16Encode(bytes);
+var bytesFromBase16 = crypto.Base16Decode(base58String);
+
+var base58String = crypto.Base58Encode(bytes);
+var bytesFromBase58 = crypto.Base58Decode(base58String);
+
+var base64String = crypto.Base64Encode(bytes);
+var bytesFromBase64 = crypto.Base64Decode(base58String);
+```
+
+## Messaging
+``` - sharedKey```
+
+## Utils
+
+### stringToBytes
+```csharp
+var crypto = new eVESTXCrypto();
+var bytes = new byte[] { 6, 7, 8, 4 };
+var stringFromBytes = crypto.BytesToString(bytes);
+```
+### bytesToString
+```csharp
+var crypto = new eVESTXCrypto();
+var bytes = "eVESTX";
+var bytesFromString = crypto.StringToBytes(stringFromBytes);
+```
+
+## Constants
+```csharp
+    static class eVESTXCryptoConstants
+    {
+        public const int PUBLIC_KEY_LENGTH = 32;
+        public const int PRIVATE_KEY_LENGTH = 32;
+        public const int SIGNATURE_LENGTH = 64;
+    }
+
+    public enum eVESTXChainId
+    {
+        MAIN_NET_CHAIN_ID = 139,
+        TEST_NET_CHAIN_ID = 140,
+    }
+```
+See more usage examples in the [csharp-lib-evestx-test](https://github.com/eVESTXCOIN/crypto-lib-eVESTX/tree/master/csharp-lib-evestx-test) file.
