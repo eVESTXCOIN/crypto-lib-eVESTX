@@ -1,4 +1,4 @@
-module github.com/eVESTXCOIN/go-lib-eVESTX
+module github.com/eVESTXCOIN/crypto-lib-eVESTX
 
 go 1.12
 
