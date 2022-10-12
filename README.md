@@ -1,7 +1,7 @@
 # Crypto lib eVESTX
 
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/eVESTXCOIN/crypto-lib-eVESTX)](https://goreportcard.com/report/github.com/eVESTXCOIN/crypto-lib-eVESTX)
+[![Go Report Card](https://img.shields.io/badge/go%20report-A+-brightgreen.svg?style=flat)](https://goreportcard.com/report/github.com/eVESTXCOIN/crypto-lib-eVESTX)
 [![GoDoc](https://godoc.org/github.com/eVESTXCOIN/crypto-lib-eVESTX?status.svg)](https://godoc.org/github.com/eVESTXCOIN/crypto-lib-eVESTX)
 
 # Golang
