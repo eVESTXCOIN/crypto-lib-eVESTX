@@ -10,6 +10,26 @@ import (
 //new vrp crypto
 var c = NewVrpCrypto()
 
+func TestCreateAddress(t *testing.T) {
+    seed := c.RandomSeed()
+	keypair := c.KeyPair(seed)
+	address := c.Address(keypair.PublicKey, MainNet)
+	fmt.Println("Seed:",seed)
+	fmt.Println("Keypair:",keypair)
+	fmt.Println("Address:",address)
+	fmt.Println("Chain:", "Mainnet - ", MainNet)
+}
+
+func TestCreateAddressTestnet(t *testing.T) {
+    seed := c.RandomSeed()
+	keypair := c.KeyPair(seed)
+	address := c.Address(keypair.PublicKey, TestNet)
+	fmt.Println("Seed:",seed)
+	fmt.Println("Keypair:",keypair)
+	fmt.Println("Address:",address)
+	fmt.Println("Chain:", "Testnet - ", TestNet)
+}
+
 //test blake2b data - expected
 func TestBlake2b(t *testing.T) {
 	tests := []struct {
@@ -159,6 +179,21 @@ func TestBase64Decoding(t *testing.T) {
 	}
 }
 
+//test new address generator
+func TestNewAddress(t *testing.T) {
+	seed := []struct {
+		seed Seed
+	}{
+		{"general payment destroy ripple acid find hill edge middle begin transfer oven picture offer deny"},
+	}
+	pair := c.KeyPair(seed[0].seed)
+	address := c.AddressFromSeed(seed[0].seed, MainNet)
+	fmt.Println("Seed:", seed)
+	fmt.Println("Address:", address)
+	fmt.Println("Pair:", pair)
+	fmt.Println("Address_Length:", len(address))
+}
+
 //test key generator seed - privateKey - publicKey
 func TestKeyGeneration(t *testing.T) {
 	tests := []struct {
@@ -198,10 +233,10 @@ func TestAddressFromSeed(t *testing.T) {
 		{"shuffle avoid clever page hidden divorce charge derive arrow maximum warfare travel author message orient god"},
 	}
 	for _, tc := range tests {
-		a := c.AddressFromSeed(tc.seed, 140)
+		a := c.AddressFromSeed(tc.seed, 98)
 		// assertStrings(t, string(tc.expected), string(a))
 		// assertStrings(t, string(tc.expected), string(a))
-		fmt.Print(string(a))
+		fmt.Print("Address: ", string(a))
 	}
 }
 
@@ -212,9 +247,7 @@ func TestVerifyAddress(t *testing.T) {
 		chainID  VrpChainID
 		expected bool
 	}{
-		{"vPPwU37FmKaPCPZBuysnfBDpZbD9fdvYM5cjq", 139, true},
-		{"vXEbnHL29gjQ6cBhjKBmMyuZdVGenXWJXEBza", 140, true},
-		{"vXEbtpiNqNRdAxAUKSSh9ZK9m8vfGcfPYbqi1", 140, true},
+		{"7JLZuBkVkaCFdFAdZC3PVJkBwtdDJsZUDVC", 139, true},
 	}
 	for _, tc := range tests {
 		ok := c.VerifyAddress(tc.address, tc.chainID)
@@ -333,13 +366,7 @@ func TestVerify(t *testing.T) {
 }
 
 // ---- eVESTX - ethereum ----
-func TestConvertAddressToEthereum(t *testing.T) {
 
-}
-
-func TestConvertEthereumToAddress(t *testing.T) {
-
-}
 
 // ---- return and validate value ----
 

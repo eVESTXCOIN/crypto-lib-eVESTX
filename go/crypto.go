@@ -8,6 +8,8 @@ import (
 	"encoding/base64"
 	"hash"
 	"strings"
+	// "github.com/pkg/errors"
+	"encoding/hex"
 
 	"github.com/agl/ed25519"
 	"github.com/agl/ed25519/edwards25519"
@@ -19,6 +21,11 @@ import (
 
 // Bytes is a type alias for the slice of bytes.
 type Bytes []byte
+
+type Digest [DigestSize]byte
+
+type EthereumHash [EthereumHashSize]byte
+type EthereumAddress [EthereumAddressSize]byte
 
 // PublicKey is a string representation of a public key bytes in form of BASE58 string.
 type PublicKey string
@@ -43,32 +50,32 @@ type VrpChainID byte
 
 // Known chain IDs
 const (
-	MainNet VrpChainID = 139
-	TestNet VrpChainID = 140
+	MainNet VrpChainID = 140
+	TestNet VrpChainID = 139
 )
 
 // The lengths of basic crypto primitives.
 const (
-	EthereumHashSize = 32
 	AddressIDSize    = 20
 	PublicKeyLength  = 32
 	PrivateKeyLength = 32
 	DigestLength     = 32
 	SignatureLength  = 64
 
-	addressVersion      byte = 1
-	headerSize               = 4
+	addressVersion      byte = 3
+	headerSize               = 2
 	bodySize                 = 20
 	checksumSize             = 4
 	addressSize              = headerSize + bodySize + checksumSize
 	seedBitSize              = 160
 	seedWordsCount           = 15
+	DigestSize    = 32
+	EthereumHashSize = 32
 	EthereumAddressSize      = AddressIDSize
 )
 
-type EthereumHash [EthereumHashSize]byte
-type EthereumAddress [EthereumAddressSize]byte
 type AddressID [AddressIDSize]byte
+type eVESTXAddress [addressSize]byte
 
 // VrpCrypto is a collection of functions to work with Vrp basic types and crypto primitives used by Vrp.
 type VrpCrypto interface {
@@ -98,12 +105,17 @@ type VrpCrypto interface {
 
 	VerifyAddress(address Address, chainID VrpChainID) bool // VerifyAddress returns true if `address` is a valid Vrp address for the given `chainId`. Function calls the `VerifyAddressChecksum` function.
 	VerifyAddressChecksum(address Address) bool             // VerifyAddressChecksum calculates and compares the `address` checksum. Returns `true` if the checksum is correct.
+	ToChainAddress(scheme byte, address []byte) eVESTXAddress //Ethereum address to eVESTX Address
+	EthereumAddressFromHexString(address string) EthereumAddress // eVESTX Address to ethereum address
+	// EthereumAddressFromBytes(b []byte) EthereumAddress //  eVESTX byte Address to Ethereum Address
+
 }
 
 type crypto struct {
 	blake  hash.Hash
 	keccak hash.Hash
 }
+
 
 // NewVrpCrypto returns a new instance of VrpCrypto interface.
 func NewVrpCrypto() VrpCrypto {
@@ -420,4 +432,81 @@ func (c *crypto) sign(curvePrivateKey *[DigestLength]byte, edPublicKey, data []b
 	return signature
 }
 
-// ---- ethereum ----
+
+func AddressFromPublicKeyHash(scheme byte, pubKeyHash []byte) eVESTXAddress {
+	var addr eVESTXAddress
+	addr[0] = addressVersion
+	addr[1] = scheme
+	copy(addr[headerSize:], pubKeyHash[:bodySize])
+	checksum, err := addressChecksum(addr[:scheme+bodySize])
+	if err != nil {
+		return addr
+		// return addr, errors.Wrap(err, "failed to calculate eVESTX Address checksum")
+	}
+	copy(addr[headerSize+bodySize:], checksum)
+	return addr
+}
+
+
+// ------- Ethereum ------
+
+func (c *crypto) ToChainAddress(scheme byte,address []byte) eVESTXAddress {
+	return AddressFromPublicKeyHash(scheme, address[:])
+}
+
+func addressChecksum(b []byte) ([]byte, error) {
+	h, err := SecureHashA(b)
+	if err != nil {
+		return nil, err
+	}
+	c := make([]byte, checksumSize)
+	copy(c, h[:checksumSize])
+	return c, nil
+}
+
+func SecureHashA(data []byte) (Digest, error) {
+	var d Digest
+	fh, err := blake2b.New256(nil)
+	if err != nil {
+		return d, err
+	}
+	if _, err := fh.Write(data); err != nil {
+		return d, err
+	}
+	fh.Sum(d[:0])
+	h := sha3.NewLegacyKeccak256()
+	if _, err := h.Write(d[:DigestSize]); err != nil {
+		return d, err
+	}
+	h.Sum(d[:0])
+	return d, nil
+}
+
+
+func (c *crypto) EthereumAddressFromHexString(s string) (EthereumAddress) {
+	b, err := DecodeFromHexString(s)
+	if err != nil {
+		return EthereumAddress{}
+	}
+	return EthereumAddressFromBytes(b)
+}
+
+func EthereumAddressFromBytes(b []byte) (EthereumAddress) {
+	if len(b) != EthereumAddressSize {
+		return EthereumAddress{}
+			// errors.Errorf("invalid EthereumAddress size: got %d, want %d", len(b), EthereumAddressSize)
+	}
+	var addr EthereumAddress
+	copy(addr[:], b)
+	return addr
+}
+
+
+func DecodeFromHexString(s string) ([]byte, error) {
+	s = strings.TrimPrefix(s, "0x")
+	b, err := hex.DecodeString(s)
+	if err != nil {
+		return nil, err
+	}
+	return b, nil
+}
