@@ -247,7 +247,7 @@ func TestVerifyAddress(t *testing.T) {
 		chainID  VrpChainID
 		expected bool
 	}{
-		{"7JLZuBkVkaCFdFAdZC3PVJkBwtdDJsZUDVC", 139, true},
+		{"7JLZuBkVkaCFdFAdZC3PVJkBwtdDJsZUDVC", 140, true},
 	}
 	for _, tc := range tests {
 		ok := c.VerifyAddress(tc.address, tc.chainID)
